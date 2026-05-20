@@ -1,0 +1,37 @@
+# Zynq Pac-Man HDMI Game
+
+This project is a real-time Pac-Man style game running on a Zybo Z7-10 using the Zynq Processing System and an HDMI framebuffer pipeline. The game logic runs in software on the ARM processor, while the programmable logic handles button input, AXI VDMA framebuffer transfer, video timing, and HDMI output.
+
+The game includes Pac-Man movement, pellet collection, power pellets, ghost AI, lives, scoring, win/loss screens, and a top-10 leaderboard with 3-character name entry. The entire game scene is software-rendered pixel-by-pixel into a DDR framebuffer and displayed over HDMI.
+
+## Features
+
+- 1920x1080 HDMI output
+- Software-rendered Pac-Man game graphics
+- Button-controlled player movement
+- Tile-based maze system
+- Pellet and power pellet mechanics
+- Ghost AI with chase, scatter, and frightened modes
+- Collision detection for ghosts and pellets
+- Score, lives, win, and game-over states
+- Top-10 leaderboard with 3-letter name entry
+- Frame timing and profiling support
+- Zynq PS/PL integration using AXI GPIO, AXI VDMA, and HDMI output
+
+## System Overview
+
+The Zynq ARM processor reads button input, updates the game state, and renders each frame into a framebuffer stored in DDR memory. After the frame is drawn, the cache is flushed and the AXI VDMA reads the framebuffer for HDMI output.
+
+Pipeline:
+
+```text
+Buttons
+  -> AXI GPIO
+  -> Zynq PS game logic
+  -> Software renderer
+  -> DDR framebuffer
+  -> Cache flush
+  -> AXI VDMA
+  -> Display controller / video timing
+  -> HDMI output
+  -> Monitor
